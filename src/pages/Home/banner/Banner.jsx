@@ -9,8 +9,8 @@ const Banner = () => {
     return (
 
 
-        <Carousel className='mt-5 mb-5' showStatus={false} showThumbs={false} autoPlay={true} infiniteLoop={true} showArrows={true}>
-            <div className='w-full h-146 bg-white rounded-2xl py-16 px-25 flex gap-10'>
+        <Carousel className='mt-5 mb-5' swipeable={true} showStatus={false} showThumbs={false} autoPlay={true} infiniteLoop={true} showArrows={true}>
+            <div className='h-146 bg-white rounded-2xl py-16 px-25 flex gap-10'>
                 <div className='w-157'>
                     <img className='h-30 px-10' src={tinydel} alt="" />
                     <p className='text-secondary text-start font-bold text-5xl pt-4'>We Make Sure Your<br /> <span className='text-base-100'>Parcel Arrives</span> On Time<br /> – No Fuss.</p>

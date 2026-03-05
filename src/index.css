@@ -17,6 +17,21 @@ body{
   font-optical-sizing: auto;
   background-color: #EAECED;
   font-style: normal;
+}
 
+.swiper-wrapper-container {
+  overflow: hidden !important;
+}
 
+.mySwiper {
+  padding-bottom: 60px;
+}
+
+.mySwiper .swiper-pagination {
+  bottom: -20px !important;
+}
+.mySwiper {
+  --swiper-pagination-color: #03373D; /* active */
+  --swiper-pagination-bullet-inactive-color: #94C6CB;
+  --swiper-pagination-bullet-inactive-opacity: 1;
 }
