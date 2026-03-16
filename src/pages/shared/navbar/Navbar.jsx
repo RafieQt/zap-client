@@ -1,16 +1,16 @@
 import React from 'react';
 import Logo from '../../../components/logo/Logo';
-import { NavLink } from 'react-router';
+import { NavLink, Link } from 'react-router';
 
 const Navbar = () => {
     const links = <>
         <li><NavLink>Services</NavLink></li>
         <li><NavLink to='/coverage'>Coverage</NavLink></li>
-        <li><NavLink>About Us</NavLink></li>
+        <li><NavLink to='/aboutUs'>About Us</NavLink></li>
         <li><NavLink>Pricing</NavLink></li>
         <li><NavLink>Blog</NavLink></li>
         <li><NavLink>Contact</NavLink></li>
-        
+
     </>
     return (
         <div>
@@ -36,11 +36,14 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end gap-3">
-                    <a className="btn rounded-xl">Sign In</a>
-                    <a className="btn rounded-xl bg-primary">Sign Up</a>
+
+
+                    <Link to="signin" className="btn rounded-xl">Sign in</Link>
+                    <Link to="register" className="btn rounded-xl bg-primary">Sign Up</Link>
+                    
                 </div>
-                
-               
+
+
 
             </div>
         </div>
