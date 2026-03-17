@@ -6,6 +6,7 @@ import useAuth from '../../../hooks/useAuth';
 import { updateProfile } from 'firebase/auth';
 import { auth } from '../../../firebase/firebase.init';
 import Swal from 'sweetalert2';
+import GoogleLogin from '../../shared/googleLogin/GoogleLogin';
 
 
 
@@ -43,7 +44,7 @@ const Register = () => {
 
     return (
         <div className='bg-white w-full h-170 rounded-2xl mt-5 mb-5 flex overflow-hidden'>
-            <div className='bg-white w-[50%] flex items-center justify-center'>
+            <div className='bg-white w-[50%] flex flex-col items-center justify-center'>
                 <form className='w-96' onSubmit={handleSubmit(handleRegistration)}>
                     <div className='text-[42px] font-extrabold text-center mb-1'>Create an Account</div>
                     <fieldset className="fieldset">
@@ -74,6 +75,7 @@ const Register = () => {
                         <div className='text-[#71717A] text-xl'>Already have an account? <Link className='text-primary hover:text-secondary transition-transform duration-300' to='/signin'>Sign in</Link></div>
                     </fieldset>
                 </form>
+                <GoogleLogin></GoogleLogin>
             </div>
             <div className='bg-[#fafdf0] w-2xl flex items-center '>
                 <img src={authImg} className='' alt="" />
