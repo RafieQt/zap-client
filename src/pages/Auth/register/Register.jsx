@@ -1,12 +1,11 @@
 import React from 'react';
-import Navbar from '../../shared/navbar/Navbar';
-import Footer from '../../shared/Footer/Footer';
 import authImg from '../../../assets/authImage.png'
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import { updateProfile } from 'firebase/auth';
 import { auth } from '../../../firebase/firebase.init';
+import Swal from 'sweetalert2';
 
 
 
@@ -23,10 +22,23 @@ const Register = () => {
 
             }
             )
-            .then(()=> {
+            .then(() => {
                 console.log(auth.currentUser);
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                if (error.code == "auth/email-already-in-use") {
+                    Swal.fire({
+                        title: "The email is already used!",
+                        
+                        imageUrl: "https://img.icons8.com/?size=100&id=13826&format=png&color=000000",
+                        imageWidth: 100,
+                        imageHeight: 100,
+                        imageAlt: "Custom image"
+                    });
+
+                }
+            });
+
     }
 
     return (
@@ -57,7 +69,8 @@ const Register = () => {
                         {
                             errors.password?.type === 'required' && (<p className='text-secondary'>Password is required!</p>)
                         }
-                        <button className="py-1 px-8 w-full bg-primary rounded-xl text-xl hover:cursor-pointer hover:text-secondary hover:shadow-2xs shadow-secondary transition-transform duration-300">Register</button>
+                        {/* register button */}
+                        <button className="py-1 mt-2 px-8 w-full bg-primary rounded-sm text-xl hover:cursor-pointer hover:text-secondary hover:shadow-2xs shadow-secondary transition-transform duration-300">Register</button>
                         <div className='text-[#71717A] text-xl'>Already have an account? <Link className='text-primary hover:text-secondary transition-transform duration-300' to='/signin'>Sign in</Link></div>
                     </fieldset>
                 </form>
