@@ -3,7 +3,7 @@ import Navbar from '../../shared/navbar/Navbar';
 import Footer from '../../shared/Footer/Footer';
 import authImg from '../../../assets/authImage.png'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import GoogleLogin from '../../shared/googleLogin/GoogleLogin';
 const Login = () => {
@@ -12,9 +12,18 @@ const Login = () => {
 
     const { signInUser } = useAuth();
 
+    let navigate = useNavigate();
+    let location = useLocation();
+    
+    
+    
+
     const handleLogin = (data) => {
         signInUser(data.email, data.password)
-            .then(res => console.log(res))
+            .then(res => {
+                console.log(res);
+                navigate(location?.state || "/");
+            })
             .catch(error => console.log(error))
     }
 
@@ -47,14 +56,14 @@ const Login = () => {
                         {/* Button */}
                         <button className="py-1 mt-2 px-8 w-full bg-primary rounded-sm text-xl hover:cursor-pointer hover:text-secondary hover:shadow-2xs shadow-secondary transition-transform duration-300">Login</button>
 
-                        <div className='text-[#71717A] text-xl'>Don't Have an Account? <Link className='text-primary hover:text-secondary transition-transform duration-300' to='/register'>Register</Link></div>
+                        <div className='text-[#71717A] text-xl'>Don't Have an Account? <Link state={location} className='text-primary hover:text-secondary transition-transform duration-300' to='/register'>Register</Link></div>
 
                         
 
 
                     </fieldset>
                 </form>
-                <GoogleLogin></GoogleLogin>
+                <GoogleLogin location={location.state}></GoogleLogin>
             </div>
             <div className='bg-[#fafdf0] w-2xl flex items-center '>
                 <img src={authImg} className='' alt="" />

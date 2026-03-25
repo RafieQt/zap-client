@@ -9,7 +9,8 @@ const Navbar = () => {
         <li><NavLink>Services</NavLink></li>
         <li><NavLink to='/coverage'>Coverage</NavLink></li>
         <li><NavLink to='/aboutUs'>About Us</NavLink></li>
-        <li><NavLink>Pricing</NavLink></li>
+        <li><NavLink to=''>Pricing</NavLink></li>
+        <li><NavLink to='/sendParcel'>Send Parcel</NavLink></li>
         <li><NavLink>Blog</NavLink></li>
         <li><NavLink>Contact</NavLink></li>
 
@@ -49,14 +50,17 @@ const Navbar = () => {
                 <div className="navbar-end ">
 
                     {
-                        user ? <Link onClick={handleLogout} to="/" className="btn rounded-xl">Logout</Link> :
+                        user ? <div className='flex gap-3'>
+                            <img className='rounded-full w-9 h-9 border-black' src={user.photoURL} alt="" />
+                            <Link onClick={handleLogout} to="/" className="btn rounded-xl">Logout</Link>
+                        </div> :
 
                             <div className=''>
                                 <Link to="signin" className="btn rounded-xl">Sign in</Link>
                             </div>
 
                     }
-                    <Link to="register" className="btn rounded-xl bg-primary  ml-3">Be a rider</Link>
+                    <Link to="/rider" className="btn rounded-xl bg-primary  ml-3">Be a rider</Link>
 
                 </div>
             </div>

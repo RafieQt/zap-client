@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import authImg from '../../../assets/authImage.png'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import { updateProfile } from 'firebase/auth';
 import { auth } from '../../../firebase/firebase.init';
@@ -17,7 +17,10 @@ const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { registerUser } = useAuth();
     const fileRef = useRef(null);
-    const { ref, ...rest } = register("photo", { required: true })
+    const { ref, ...rest } = register("photo", { required: true });
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const handleRegistration = async (data) => {
 
@@ -34,6 +37,8 @@ const Register = () => {
         registerUser(data.email, data.password)
             .then(res => {
                 const user = res.user;
+                console.log(user);
+                navigate(location?.state || "/")
                 return updateProfile(user, { displayName: data.name, photoURL: imageURL })
 
             }
@@ -72,7 +77,7 @@ const Register = () => {
                         }} className='hidden' type="file" name="photo" id="" placeholder='' />
                         <label className="label text-sm font-semibold">Profile Image</label>
                         <div onClick={() => fileRef.current.click()} className='w-12 h-12 rounded-full hover:cursor-pointer'>
-                            <img src={profileImage} alt="" />
+                            <img src={profileImage} className='hover:cursor-pointer' alt="" />
                         </div>
                         {
                             errors.photo?.type === 'required' && (<p className='text-secondary'>Profile picture is required!</p>)
@@ -101,7 +106,7 @@ const Register = () => {
                         }
                         {/* register button */}
                         <button className="py-1 mt-2 px-8 w-full bg-primary rounded-sm text-xl hover:cursor-pointer hover:text-secondary hover:shadow-2xs shadow-secondary transition-transform duration-300">Register</button>
-                        <div className='text-[#71717A] text-xl'>Already have an account? <Link className='text-primary hover:text-secondary transition-transform duration-300' to='/signin'>Sign in</Link></div>
+                        <div className='text-[#71717A] text-xl'>Already have an account? <Link state={location.state} className='text-primary hover:text-secondary transition-transform duration-300' to='/signin'>Sign in</Link></div>
                     </fieldset>
                 </form>
                 <GoogleLogin></GoogleLogin>

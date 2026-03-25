@@ -7,6 +7,9 @@ import AboutUs from "../pages/AboutUs/AboutUs";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Auth/login/Login";
 import Register from "../pages/Auth/register/Register";
+import PrivateRoute from "./PrivateRoute";
+import Rider from "../pages/rider/Rider";
+import SendParcel from "../pages/sendParcel/SendParcel";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +30,20 @@ export const router = createBrowserRouter([
         {
             path: "/aboutUs",
             Component: AboutUs,
+           
+        },
+        {
+            path: "/rider",
+            element: <PrivateRoute>
+                <Rider></Rider>
+            </PrivateRoute>
+           
+        },
+        {
+            path: "/sendParcel",
+            element: <PrivateRoute>
+                <SendParcel></SendParcel>
+            </PrivateRoute>
            
         },
     ]
