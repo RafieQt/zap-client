@@ -5,6 +5,7 @@ import bigdel from '../../../assets/big-deliveryman.png'
 import tinydel from '../../../assets/tiny-deliveryman.png'
 import banner1 from '../../../assets/banner/banner2.png'
 import banner2 from '../../../assets/banner/banner3.png'
+import { Link } from 'react-router';
 const Banner = () => {
     return (
 
@@ -17,7 +18,7 @@ const Banner = () => {
                     <p className='text-accent text-start pt-4 pb-8'>Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.</p>
                     <div className=' gap-3 flex'>
                         <button className='btn rounded-full bg-primary' >Track Your Parcel</button>
-                        <button className='btn' >Be A Rider</button>
+                        <Link to='/rider' className='btn rounded-xl' >Be A Rider</Link>
                     </div>
                 </div>
                 <div>

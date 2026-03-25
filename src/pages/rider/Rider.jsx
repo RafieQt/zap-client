@@ -17,10 +17,10 @@ const Rider = () => {
                         <label className="label text-sm font-semibold">Driving License Number</label>
                         <input type="number" className="w-full input bg-white" placeholder="Password" />
                         <label className="label text-sm font-semibold">Email</label>
-                        <input type="email" className="w-full input bg-white" placeholder="Email" />
+                        <input type="text" className="w-full input bg-white" placeholder="Email" />
 
                         <label className="label text-sm font-semibold">Your District</label>
-                        <input type="email" className="w-full input bg-white" placeholder="District name" />
+                        <input type="text" className="w-full input bg-white" placeholder="District name" />
 
                         <label className="label text-sm font-semibold">Your Religion</label>
                         <input type="email" className="w-full input bg-white" placeholder="Religion" />
