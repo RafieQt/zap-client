@@ -1,9 +1,20 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
+import { useLoaderData } from 'react-router';
 
 const SendParcel = () => {
-    const {
-        register, handleSubmit, formState: { errors } } = useForm();
+    const serviceCenters = useLoaderData();
+    const{register, handleSubmit, control, formState: { errors } } = useForm();
+
+    const regions = [...new Set(serviceCenters.map(center=> center.region))];
+
+    const districtByRegion = region=>{
+        return serviceCenters.filter(r=> r.region === region).map(d=> d.district);
+    }
+   
+
+    const senderRegion = useWatch({control, name:'senderRegion'});
+    const receiverRegion = useWatch({control, name: "receiverRegion"});
 
     const handleSendParcel = (data) => {
         console.log(data);
@@ -34,7 +45,7 @@ const SendParcel = () => {
                         {
                             errors.parcelName?.type == "required" && (<p className='text-secondary text-xs'>Parcel's name is required</p>)
                         }
-                        
+
                     </div>
 
                     {/* parcel weight */}
@@ -70,11 +81,11 @@ const SendParcel = () => {
                         {
                             errors.senderAddress?.type == "minLength" && (<p className='text-secondary text-xs'>Location length has to be at least 4 character</p>)
                         }
-                        
+
 
                         {/* Sender phone */}
                         <label className="mt-5 label text-sm font-semibold">Sender Phone no.</label>
-                        <input type="number" {...register('senderPhone', { required: true, minLength:11 })} className="w-full input bg-white " placeholder="Sender Phone no." />
+                        <input type="number" {...register('senderPhone', { required: true, minLength: 11 })} className="w-full input bg-white " placeholder="Sender Phone no." />
                         {
                             errors.senderPhone?.type == "required" && (<p className='text-secondary text-xs'>Sender's phone no. is required</p>)
                         }
@@ -82,16 +93,40 @@ const SendParcel = () => {
                             errors.senderPhone?.type == "minLength" && (<p className='text-secondary text-xs'>Phone Number has be 11 digit</p>)
                         }
 
-                        {/* sender district */}
-                        <label className="mt-5 label text-sm font-semibold">Your District</label>
-                        <input type="text" {...register('senderDistrict', { required: true })} className="w-full input bg-white " placeholder="Your District" />
+                        {/* sender Region */}
+                        <label className="mt-5 label text-sm font-semibold">Your Region</label>
+                        <fieldset className="fieldset">
+                            <select {...register("senderRegion", { required: true })} className="select bg-white" defaultValue="">
+                                <option value="" disabled={true}>Pick a Region</option>
+                                {
+                                    regions.map((r, i)=> <option key={i} value={r}>{r}</option>)
+                                }
+                                
+                            </select>
+                        </fieldset>
                         {
-                            errors.senderDistrict?.type == "required" && (<p className='text-secondary text-xs'>Sender's District is required</p>)
+                            errors.senderRegion &&(<p className='text-secondary text-xs'>Region is required!</p>)
+                        }
+            
+
+                        {/* Sender District */}
+                        <label className="mt-5 label text-sm font-semibold">Your District</label>
+                        <fieldset className="fieldset">
+                            <select {...register("senderDistrict", { required: true })} className="select bg-white" defaultValue="">
+                                <option value="" disabled={true}>Pick a District</option>
+                                {
+                                    districtByRegion(senderRegion).map((r, i)=> <option key={i} value={r}>{r}</option>)
+                                }
+                                
+                            </select>
+                        </fieldset>
+                        {
+                            errors.senderDistrict &&(<p className='text-secondary text-xs'>District is required!</p>)
                         }
 
                         {/* Pickup Destination */}
                         <label className="mt-5 label text-sm font-semibold">Pick-up destination</label>
-                        <input type="text" {...register('pickupLocation', { required: true, minLength:4 })} className="w-full input bg-white " placeholder="Pick-up destination" />
+                        <input type="text" {...register('pickupLocation', { required: true, minLength: 4 })} className="w-full input bg-white " placeholder="Pick-up destination" />
                         {
                             errors.pickupLocation?.type == "required" && (<p className='text-secondary text-xs'>Pick-up location is required</p>)
                         }
@@ -113,7 +148,7 @@ const SendParcel = () => {
 
                         {/* receiver address */}
                         <label className="mt-5 label text-sm font-semibold">Receiver Address</label>
-                        <input type="text" {...register('receiverAddress', { required: true, minLength:4 })} className="w-full input bg-white " placeholder="Receiver Address" />
+                        <input type="text" {...register('receiverAddress', { required: true, minLength: 4 })} className="w-full input bg-white " placeholder="Receiver Address" />
                         {
                             errors.receiverAddress?.type == "required" && (<p className='text-secondary text-xs'>Receiver's Address is required</p>)
                         }
@@ -123,7 +158,7 @@ const SendParcel = () => {
 
                         {/* receiver phone */}
                         <label className="mt-5 label text-sm font-semibold">Receiver Phone no.</label>
-                        <input type="number" {...register('receiverPhone', { required: true, minLength:11 })} className="w-full input bg-white " placeholder="Receiver Phone no." />
+                        <input type="number" {...register('receiverPhone', { required: true, minLength: 11 })} className="w-full input bg-white " placeholder="Receiver Phone no." />
                         {
                             errors.receiverPhone?.type == "required" && (<p className='text-secondary text-xs'>Receiver's phone no. is required</p>)
                         }
@@ -131,16 +166,40 @@ const SendParcel = () => {
                             errors.receiverPhone?.type == "minLength" && (<p className='text-secondary text-xs'>Phone Number has be 11 digit</p>)
                         }
 
-                        {/* receiver district */}
-                        <label className="mt-5 label text-sm font-semibold">Receiver District</label>
-                        <input type="text" {...register('receiverDistrict', { required: true })} className="w-full input bg-white " placeholder="Receiver District" />
+                        {/* receiver region */}
+                        <label className="mt-5 label text-sm font-semibold">Receiver Region</label>
+                        <fieldset className="fieldset">
+                            <select {...register("receiverRegion", { required: true })} className="select bg-white" defaultValue="">
+                                <option value="" disabled={true}>Pick a region</option>
+                                {
+                                    regions.map((r, i)=> <option key={i} value={r}>{r}</option>)
+                                }
+                                
+                            </select>
+                        </fieldset>
                         {
-                            errors.receiverDistrict?.type == "required" && (<p className='text-secondary text-xs'>Receiver's District is required</p>)
+                            errors.receiverRegion &&(<p className='text-secondary text-xs'>Region is required!</p>)
                         }
+
+                        {/* receiver district */}
+                        <label className="mt-5 label text-sm font-semibold">Your District</label>
+                        <fieldset className="fieldset">
+                            <select {...register("receiverDistrict", { required: true })} className="select bg-white" defaultValue="">
+                                <option value="" disabled={true}>Pick a District</option>
+                                {
+                                    districtByRegion(receiverRegion).map((r, i)=> <option key={i} value={r}>{r}</option>)
+                                }
+                                
+                            </select>
+                        </fieldset>
+                        {
+                            errors.receiverDistrict &&(<p className='text-secondary text-xs'>District is required!</p>)
+                        }
+                        
 
                         {/* delivey location */}
                         <label className="mt-5 label text-sm font-semibold">Delivery destination</label>
-                        <input type="text" {...register('deliveryLocation', {required: true, minLength:4})} className="w-full input bg-white " placeholder="Delivery destination" />
+                        <input type="text" {...register('deliveryLocation', { required: true, minLength: 4 })} className="w-full input bg-white " placeholder="Delivery destination" />
                         {
                             errors.deliveryLocation?.type == "required" && (<p className='text-secondary text-xs'>Delivery Location is required</p>)
                         }
