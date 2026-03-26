@@ -28,6 +28,7 @@ const Navbar = () => {
 
     return (
         <div>
+            
             <div className="navbar bg-white rounded-2xl shadow-sm">
                 <div className="navbar-start">
                     <div className="dropdown">
