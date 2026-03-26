@@ -35,3 +35,7 @@ body{
   --swiper-pagination-bullet-inactive-color: #94C6CB;
   --swiper-pagination-bullet-inactive-opacity: 1;
 }
+
+.my-confirm-btn{
+  color: #03373D;
+}

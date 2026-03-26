@@ -1,23 +1,77 @@
 import React from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { useLoaderData } from 'react-router';
+import Swal from 'sweetalert2';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import useAuth from '../../hooks/useAuth';
 
 const SendParcel = () => {
     const serviceCenters = useLoaderData();
-    const{register, handleSubmit, control, formState: { errors } } = useForm();
+    const {user}= useAuth();
+    const { register, handleSubmit, control, formState: { errors } } = useForm();
 
-    const regions = [...new Set(serviceCenters.map(center=> center.region))];
+    const axiosSecure = useAxiosSecure();
 
-    const districtByRegion = region=>{
-        return serviceCenters.filter(r=> r.region === region).map(d=> d.district);
+    const regions = [...new Set(serviceCenters.map(center => center.region))];
+
+    const districtByRegion = region => {
+        return serviceCenters.filter(r => r.region === region).map(d => d.district);
     }
-   
 
-    const senderRegion = useWatch({control, name:'senderRegion'});
-    const receiverRegion = useWatch({control, name: "receiverRegion"});
+
+    const senderRegion = useWatch({ control, name: 'senderRegion' });
+    const receiverRegion = useWatch({ control, name: "receiverRegion" });
 
     const handleSendParcel = (data) => {
         console.log(data);
+        const isDocument = data.parcelType === "document";
+        const isSameDistrict = data.receiverDistrict === data.senderDistrict;
+        const parcelWeight = parseInt(data.parcelWeight);
+
+        let cost = 0;
+        if (isDocument) {
+            cost = isSameDistrict ? 60 : 80;
+        } else {
+            if (parcelWeight < 3) {
+                cost = isSameDistrict ? 110 : 150;
+            } else {
+                const extraWeight = parcelWeight - 3;
+                const minCharge = isSameDistrict ? 110 : 150;
+                const extraCharge = isSameDistrict ? extraWeight * 3 : extraWeight * 40 + 40;
+
+                cost = minCharge + extraCharge;
+            }
+        }
+
+        console.log(cost);
+
+        Swal.fire({
+            title: "Order confirmation.",
+            text: `Total cost is ${cost} BDT.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#CAEB66",
+            customClass: {
+                confirmButton: 'my-confirm-btn'
+            },
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, proceed!"
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                axiosSecure.post('/parcels', data)
+                    .then(res => {
+                        console.log("after saving parcel", res.data);
+                    })
+                Swal.fire({
+                    title: "Order Confirmed!",
+                    text: "Your order has been successfully accepted.",
+                    icon: "success"
+                });
+            }
+
+        });
+
     }
 
     return (
@@ -67,7 +121,14 @@ const SendParcel = () => {
 
                         {/* Senders Name */}
                         <label className="label text-sm font-semibold">Sender Name</label>
-                        <input type="text" {...register('senderName', { required: true })} className="w-full input bg-white " placeholder="Sender name" />
+                        <input type="text" {...register('senderName', { required: true })} className="w-full input bg-white " defaultValue={user?.displayName} placeholder="Sender name" />
+                        {
+                            errors.senderName?.type == "required" && (<p className='text-secondary text-xs'>Sender's name is required</p>)
+                        }
+
+                        {/* Senders Email */}
+                        <label className="label mt-5 text-sm font-semibold">Sender Name</label>
+                        <input type="email" {...register('senderEmail', { required: true })} className="w-full input bg-white " readOnly defaultValue={user?.email}/>
                         {
                             errors.senderName?.type == "required" && (<p className='text-secondary text-xs'>Sender's name is required</p>)
                         }
@@ -99,15 +160,15 @@ const SendParcel = () => {
                             <select {...register("senderRegion", { required: true })} className="select bg-white" defaultValue="">
                                 <option value="" disabled={true}>Pick a Region</option>
                                 {
-                                    regions.map((r, i)=> <option key={i} value={r}>{r}</option>)
+                                    regions.map((r, i) => <option key={i} value={r}>{r}</option>)
                                 }
-                                
+
                             </select>
                         </fieldset>
                         {
-                            errors.senderRegion &&(<p className='text-secondary text-xs'>Region is required!</p>)
+                            errors.senderRegion && (<p className='text-secondary text-xs'>Region is required!</p>)
                         }
-            
+
 
                         {/* Sender District */}
                         <label className="mt-5 label text-sm font-semibold">Your District</label>
@@ -115,13 +176,13 @@ const SendParcel = () => {
                             <select {...register("senderDistrict", { required: true })} className="select bg-white" defaultValue="">
                                 <option value="" disabled={true}>Pick a District</option>
                                 {
-                                    districtByRegion(senderRegion).map((r, i)=> <option key={i} value={r}>{r}</option>)
+                                    districtByRegion(senderRegion).map((r, i) => <option key={i} value={r}>{r}</option>)
                                 }
-                                
+
                             </select>
                         </fieldset>
                         {
-                            errors.senderDistrict &&(<p className='text-secondary text-xs'>District is required!</p>)
+                            errors.senderDistrict && (<p className='text-secondary text-xs'>District is required!</p>)
                         }
 
                         {/* Pickup Destination */}
@@ -144,6 +205,13 @@ const SendParcel = () => {
                         <input type="text" {...register('receiverName', { required: true })} className="w-full input bg-white " placeholder="Receiver name" />
                         {
                             errors.receiverName?.type == "required" && (<p className='text-secondary text-xs'>Receiver's name is required</p>)
+                        }
+
+                        {/* Receiver Email */}
+                        <label className="label mt-5 text-sm font-semibold">Receiver Email</label>
+                        <input type="email" {...register('receiverEmail', { required: true })} className="w-full input bg-white "/>
+                        {
+                            errors.receiverEmail?.type == "required" && (<p className='text-secondary text-xs'>Sender's name is required</p>)
                         }
 
                         {/* receiver address */}
@@ -172,13 +240,13 @@ const SendParcel = () => {
                             <select {...register("receiverRegion", { required: true })} className="select bg-white" defaultValue="">
                                 <option value="" disabled={true}>Pick a region</option>
                                 {
-                                    regions.map((r, i)=> <option key={i} value={r}>{r}</option>)
+                                    regions.map((r, i) => <option key={i} value={r}>{r}</option>)
                                 }
-                                
+
                             </select>
                         </fieldset>
                         {
-                            errors.receiverRegion &&(<p className='text-secondary text-xs'>Region is required!</p>)
+                            errors.receiverRegion && (<p className='text-secondary text-xs'>Region is required!</p>)
                         }
 
                         {/* receiver district */}
@@ -187,15 +255,15 @@ const SendParcel = () => {
                             <select {...register("receiverDistrict", { required: true })} className="select bg-white" defaultValue="">
                                 <option value="" disabled={true}>Pick a District</option>
                                 {
-                                    districtByRegion(receiverRegion).map((r, i)=> <option key={i} value={r}>{r}</option>)
+                                    districtByRegion(receiverRegion).map((r, i) => <option key={i} value={r}>{r}</option>)
                                 }
-                                
+
                             </select>
                         </fieldset>
                         {
-                            errors.receiverDistrict &&(<p className='text-secondary text-xs'>District is required!</p>)
+                            errors.receiverDistrict && (<p className='text-secondary text-xs'>District is required!</p>)
                         }
-                        
+
 
                         {/* delivey location */}
                         <label className="mt-5 label text-sm font-semibold">Delivery destination</label>
