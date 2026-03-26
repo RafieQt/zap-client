@@ -41,7 +41,7 @@ const DashboadLayout = () => {
                                 </button>
                             </li>
                             <li>
-                                    <button  className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="My Parcels"><FaBoxOpen /></button>
+                                    <NavLink to="/dashboard/my-parcels" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="My Parcels"><FaBoxOpen /></NavLink>
                                     
                                     <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/my-parcels'> <FaBoxOpen />
                                     My Parcels</NavLink></span>
