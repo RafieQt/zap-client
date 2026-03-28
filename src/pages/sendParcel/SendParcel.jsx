@@ -43,7 +43,7 @@ const SendParcel = () => {
             }
         }
 
-        console.log(cost);
+        data.cost = cost;
 
         Swal.fire({
             title: "Order confirmation.",
@@ -128,7 +128,7 @@ const SendParcel = () => {
 
                         {/* Senders Email */}
                         <label className="label mt-5 text-sm font-semibold">Sender Name</label>
-                        <input type="email" {...register('senderEmail', { required: true })} className="w-full input bg-white " readOnly defaultValue={user?.email}/>
+                        <input type="email" {...register('senderEmail', { required: true })} className="w-full input bg-white "  defaultValue={user?.email}/>
                         {
                             errors.senderName?.type == "required" && (<p className='text-secondary text-xs'>Sender's name is required</p>)
                         }
