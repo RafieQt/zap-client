@@ -5,11 +5,12 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { MdDelete } from "react-icons/md";
 import { MdEditSquare } from "react-icons/md";
 import Swal from 'sweetalert2';
+import { Link } from 'react-router';
 
 const MyParcels = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const { data: parcels = [], refetch} = useQuery({
+    const { data: parcels = [], refetch } = useQuery({
         queryKey: ['myParcels', user.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${user.email}`);
@@ -60,6 +61,8 @@ const MyParcels = () => {
                             <th>Sender Name</th>
                             <th>Receiver Name</th>
                             <th>Parcel Cost</th>
+                            <th>Payment</th>
+                            <th>Delivery status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -73,6 +76,12 @@ const MyParcels = () => {
                                 <td>{parcel.senderName}</td>
                                 <td>{parcel.receiverName}</td>
                                 <td>{parcel.cost}</td>
+                                <td>{
+                                    parcel.payment === "paid" ? <span>Paid</span> : <Link to={`/dashboard/payment/${parcel._id}`}>
+                                        <button className='btn btn-primary btn-sm text-secondary'>Pay</button>
+                                    </Link>
+                                }</td>
+                                <td>{parcel.deliveryStatus}</td>
                                 <td>
                                     <button className="btn btn-square hover:bg-primary mr-2">
                                         <MdEditSquare />
