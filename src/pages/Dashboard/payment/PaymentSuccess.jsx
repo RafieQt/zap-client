@@ -1,15 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const PaymentSuccess = () => {
     const [searchParams] = useSearchParams();
+    const [paymentInfo, setPaymentInfo] = useState({
+        transactionId: null,
+        trackingId: null
+    });
     const axiosSecure = useAxiosSecure();
     const sessionId = searchParams.get('session_id');
     console.log(sessionId);
 
     useEffect(() => {
-        axiosSecure.patch(`/payment-success?session_id=${sessionId}`).then(res => console.log(res))
+        axiosSecure.patch(`/payment-success?session_id=${sessionId}`).then(res => setPaymentInfo({
+            transactionId: res.data.transactionId,
+            trackingId: res.data.trackingId
+        }))
     }, [sessionId, axiosSecure])
 
     return (
@@ -32,6 +39,13 @@ const PaymentSuccess = () => {
                 <p className="text-sm text-gray-500 mb-6">
                     Your payment has been successfully processed. Now you can explore more products.
                 </p>
+                <p className="text-sm text-gray-500 mb-6">
+                    Your transaction ID: {paymentInfo.transactionId || 'Loading...'}
+                </p>
+                <p className="text-sm text-gray-500 mb-6">
+                    Your parcel tracking ID: {paymentInfo.trackingId || 'Loading...'}
+                </p>
+
 
                 {/* Button */}
                 <button
