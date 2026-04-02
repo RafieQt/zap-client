@@ -106,6 +106,7 @@ const MyParcels = () => {
 
                     </tbody>
                 </table>
+                <Link to='/sendParcel'><div className='w-full flex justify-center py-2'><button className='btn btn-primary text-secondary mt-4'>Send Parcel</button></div></Link>
             </div>
         </div>
     );

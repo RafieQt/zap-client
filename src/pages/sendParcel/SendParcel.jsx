@@ -1,15 +1,15 @@
 import React from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 
 const SendParcel = () => {
     const serviceCenters = useLoaderData();
-    const {user}= useAuth();
+    const { user } = useAuth();
     const { register, handleSubmit, control, formState: { errors } } = useForm();
-
+    const navigation = useNavigate();
     const axiosSecure = useAxiosSecure();
 
     const regions = [...new Set(serviceCenters.map(center => center.region))];
@@ -62,6 +62,16 @@ const SendParcel = () => {
                 axiosSecure.post('/parcels', data)
                     .then(res => {
                         console.log("after saving parcel", res.data);
+                        if (res.data.insertedId) {
+                            navigation('/dashboard/my-parcels');
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Your work has been saved",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
                     })
                 Swal.fire({
                     title: "Order Confirmed!",
@@ -128,7 +138,7 @@ const SendParcel = () => {
 
                         {/* Senders Email */}
                         <label className="label mt-5 text-sm font-semibold">Sender Name</label>
-                        <input type="email" {...register('senderEmail', { required: true })} className="w-full input bg-white "  defaultValue={user?.email}/>
+                        <input type="email" {...register('senderEmail', { required: true })} className="w-full input bg-white " defaultValue={user?.email} />
                         {
                             errors.senderName?.type == "required" && (<p className='text-secondary text-xs'>Sender's name is required</p>)
                         }
@@ -209,7 +219,7 @@ const SendParcel = () => {
 
                         {/* Receiver Email */}
                         <label className="label mt-5 text-sm font-semibold">Receiver Email</label>
-                        <input type="email" {...register('receiverEmail', { required: true })} className="w-full input bg-white "/>
+                        <input type="email" {...register('receiverEmail', { required: true })} className="w-full input bg-white " />
                         {
                             errors.receiverEmail?.type == "required" && (<p className='text-secondary text-xs'>Sender's name is required</p>)
                         }
