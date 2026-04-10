@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet } from 'react-router';
 import Logo from '../components/logo/Logo';
 import DashboardLogo from '../components/logo/DashboardLogo';
 import { FaBoxOpen } from "react-icons/fa";
+import { FaHistory } from "react-icons/fa";
 
 const DashboadLayout = () => {
     return (
@@ -45,6 +46,12 @@ const DashboadLayout = () => {
                                     
                                     <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/my-parcels'> <FaBoxOpen />
                                     My Parcels</NavLink></span>
+                            </li>
+                            <li>
+                                    <NavLink to="/dashboard/payment-history" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="Payment History"><FaHistory /></NavLink>
+                                    
+                                    <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/payment-history'> <FaHistory />
+                                    Payment History</NavLink></span>
                             </li>
 
                             {/* List item */}
