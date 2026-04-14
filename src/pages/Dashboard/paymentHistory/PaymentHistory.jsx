@@ -10,9 +10,16 @@ const PaymentHistory = () => {
     const { data: payments = [] } = useQuery({
         queryKey: ['payments', user.email],
         queryFn: async () => {
+            console.log('🟢 Making request to:', `/payments?email=${user.email}`);
+            try {
             const res = await axiosSecure.get(`/payments?email=${user.email}`);
-            console.log(res.data);
+            console.log('✅ Response received:', res.data);
             return res.data;
+        } catch (error) {
+            console.error('❌ Request failed:', error);
+            console.error('Error response:', error.response);
+            throw error;
+        }
         }
     })
     return (
