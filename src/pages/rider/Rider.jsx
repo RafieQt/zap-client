@@ -4,6 +4,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useLoaderData } from 'react-router';
+import Swal from 'sweetalert2';
 
 const Rider = () => {
     const { user } = useAuth();
@@ -25,6 +26,18 @@ const Rider = () => {
 
     const handleRider = (data) => {
         console.log(data);
+        axiosSecure.post('/riders', data).then(res => {
+            if (res.data.insertedId) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Your application has been submitted. We will soon reach you!",
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        })
+
     }
 
     return (
@@ -98,7 +111,7 @@ const Rider = () => {
 
                             {/* rider NID */}
                             <label className="label text-sm font-semibold">NID no.</label>
-                            <input type="number" {...register("riderNID", { required: true, minLength:10 })} className="w-full input bg-white" placeholder="NID number" />
+                            <input type="number" {...register("riderNID", { required: true, minLength: 10 })} className="w-full input bg-white" placeholder="NID number" />
                             {
                                 errors.riderNID?.type == "required" && (<p className='text-secondary text-xs'>Rider's NID is required</p>)
                             }
