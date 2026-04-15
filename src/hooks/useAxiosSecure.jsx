@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import useAuth from './useAuth';
+import { useNavigate } from 'react-router';
 
 const axiosSecure = axios.create({
 
@@ -8,28 +9,35 @@ const axiosSecure = axios.create({
 })
 
 const useAxiosSecure = () => {
-
-    const { user } = useAuth();
-    const tokenRef = useRef(user?.accessToken);
-    const interceptorRef = useRef(null);
-
-    useEffect(()=>{
-        tokenRef.current = user?.accessToken;
-    },[user]);
-
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
     useEffect(() => {
-        interceptorRef.current = axiosSecure.interceptors.request.use(config => {
-
-            config.headers.Authorization = `Bearer ${tokenRef.current}`
-
+        const requestInterceptor = axiosSecure.interceptors.request.use((config) => {
+            config.headers.Authorization = `Bearer ${user.accessToken}`
             return config;
         })
-        return () => {
-            if(interceptorRef.current !== null){
-                axiosSecure.interceptors.request.eject(interceptorRef.current);
+
+        const responseInterceptor = axiosSecure.interceptors.response.use((response) => {
+            return response;
+        }, (error) => {
+            console.log(error);
+            const statusCode = error.status;
+            if(statusCode== 401 || statusCode==403){
+                logout().then(()=>{
+                    navigate('/signin');
+                })
             }
+
+            return Promise.reject(error);
+        })
+
+        return () => {
+
+            axios.interceptors.request.eject(requestInterceptor);
+            axios.interceptors.response.eject(responseInterceptor);
         }
-    }, [])
+
+    }, [user]);
 
 
 
