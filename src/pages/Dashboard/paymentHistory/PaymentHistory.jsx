@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import moment from 'moment/moment';
 
 const PaymentHistory = () => {
     const { user } = useAuth();
@@ -18,6 +19,7 @@ const PaymentHistory = () => {
         },
         enabled: !! user?.email
     })
+    
     return (
         <div>
             <div className='w-322 min-h-176 ml-8 mr-13 mt-8 rounded-2xl bg-white p-8'>
@@ -34,6 +36,7 @@ const PaymentHistory = () => {
                                     <th>Recipient Info</th>
                                     <th>Tracking Number</th>
                                     <th>Payment Info</th>
+                                    <th>Payment Time</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -41,11 +44,13 @@ const PaymentHistory = () => {
 
                                 {payments.map((payment, index) => {
                                     return (<tr key={payment._id}>
+                                        
                                         <th>{index + 1}</th>
                                         <td>{payment.parcelName}</td>
                                         <td>{payment.customerEmail}</td>
                                         <td>{payment.trackingId}</td>
-                                        <td>{payment.amount}</td>
+                                        <td className='pl-9'>${payment.amount}</td>
+                                        <td>{moment(payment.paidAt).format("YYYY-MM-DD HH:mm")}</td>
                                         <td><button>view</button></td>
                                     </tr>)
                                 })}

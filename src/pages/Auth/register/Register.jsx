@@ -12,12 +12,14 @@ import axios from 'axios';
 
 
 
+
 const Register = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { registerUser } = useAuth();
     const fileRef = useRef(null);
     const { ref, ...rest } = register("photo", { required: true });
+   
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -33,33 +35,49 @@ const Register = () => {
         const imgUpload = await axios.post(imageAPIURL, formData);
         const imageURL = imgUpload.data.data.url;
 
-
         registerUser(data.email, data.password)
             .then(res => {
                 const user = res.user;
-                console.log(user);
-                navigate(location?.state || "/")
-                return updateProfile(user, { displayName: data.name, photoURL: imageURL })
 
-            }
-            )
-            .then(() => {
+                // Update profile
+                return updateProfile(user, {
+                    displayName: data.name,
+                    photoURL: imageURL
+                }).then(() => {
+                    // Return user info for next .then()
+                    return {
+                        email: data.email,
+                        displayName: data.name,
+                        photoURL: imageURL
+                    };
+                });
+            })
+            .then(userInfo => {
+                // Create user in database - use regular axios, not axiosSecure
+                return axios.post('http://localhost:3000/users', userInfo);
+            })
+            .then(res => {
+                if (res.data.insertedId) {
+                    console.log("user created in database.")
+                }
                 console.log(auth.currentUser);
+
+                // Navigate only after everything is done
+                navigate(location?.state || "/");
             })
             .catch(error => {
                 if (error.code == "auth/email-already-in-use") {
                     Swal.fire({
                         title: "The email is already used!",
-
                         imageUrl: "https://img.icons8.com/?size=100&id=13826&format=png&color=000000",
                         imageWidth: 100,
                         imageHeight: 100,
                         imageAlt: "Custom image"
                     });
-
+                } else {
+                    console.error("Registration error:", error);
                 }
             });
-
     }
 
 

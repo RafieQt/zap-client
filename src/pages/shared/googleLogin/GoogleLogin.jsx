@@ -3,18 +3,24 @@ import useAuth from '../../../hooks/useAuth';
 import { useLocation, useNavigate } from 'react-router';
 
 const GoogleLogin = () => {
-    const {signInWithGoogle} = useAuth();
+    const { signInWithGoogle } = useAuth();
     let navigate = useNavigate();
     let location = useLocation();
 
-    const handleGoogleLogin = ()=>{
+    const handleGoogleLogin = () => {
         signInWithGoogle()
-        .then(res=> {
-            navigate(location?.state || '/')
-            
+            .then(res => {
+                console.log(res);
+                navigate(location?.state || '/')
 
-        })
-        .catch(error=> console.log(error.code))
+                const userInfo = {
+                    email: res.user.email,
+                    displayName: res.user.DisplayName,
+                    photoURL: res.user.imageURL
+                }
+
+            })
+            .catch(error => console.log(error.code))
     }
 
     return (
