@@ -1,7 +1,32 @@
 import React from 'react';
 import bikeRider from '../../assets/agent-pending.png';
+import { useForm, useWatch } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useLoaderData } from 'react-router';
 
 const Rider = () => {
+    const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
+
+    const { register, handleSubmit, control, formState: { errors } } = useForm();
+
+    const serviceCenters = useLoaderData();
+
+    const regionDuplicate = serviceCenters.map(c => c.region);
+    const regions = [...new Set(regionDuplicate)];
+    const reiderRegion = useWatch({ control, name: "riderRegion" });
+
+    const districtByRegion = (region) => {
+        const regionDistricts = serviceCenters.filter(c => c.region === region);
+        const districts = regionDistricts.map(d => d.district);
+        return districts;
+    }
+
+    const handleRider = (data) => {
+        console.log(data);
+    }
+
     return (
         <div className='w-full h-341 bg-white px-25 pt-20 rounded-2xl mt-8 mb-32'>
             <div>
@@ -11,33 +36,88 @@ const Rider = () => {
             </div>
             <div className='flex items-start justify-between'>
                 <div>
-                    <fieldset className="fieldset w-130">
-                        <label className="label text-sm font-semibold">Your Name</label>
-                        <input type="email" className="w-full input bg-white" placeholder="Name" />
-                        <label className="label text-sm font-semibold">Driving License Number</label>
-                        <input type="number" className="w-full input bg-white" placeholder="Password" />
-                        <label className="label text-sm font-semibold">Email</label>
-                        <input type="text" className="w-full input bg-white" placeholder="Email" />
+                    <form onSubmit={handleSubmit(handleRider)}>
+                        <fieldset className="fieldset w-130">
+                            <label className="label text-sm font-semibold">Your Name</label>
+                            <input type="text" {...register('riderName', { required: true })} className="w-full input bg-white" placeholder="Name" />
+                            {
+                                errors.riderName?.type == "required" && (<p className='text-secondary text-xs'>Rider's name is required</p>)
+                            }
+                            <label className="label text-sm font-semibold">Driving License Number</label>
+                            <input type="number" {...register("licenseNumber", { required: true })} className="w-full input bg-white" placeholder="Password" />
+                            {
+                                errors.licenseNumber?.type == "required" && (<p className='text-secondary text-xs'>Rider's license number is required</p>)
+                            }
 
-                        <label className="label text-sm font-semibold">Your District</label>
-                        <input type="text" className="w-full input bg-white" placeholder="District name" />
+                            <label className="label text-sm font-semibold">Email</label>
+                            <input type="text" {...register("riderMail", { required: true })} className="w-full input bg-white" placeholder="Email" />
+                            {
+                                errors.riderMail?.type == "required" && (<p className='text-secondary text-xs'>Rider's license number is required</p>)
+                            }
 
-                        <label className="label text-sm font-semibold">Your Religion</label>
-                        <input type="email" className="w-full input bg-white" placeholder="Religion" />
-                        <label className="label text-sm font-semibold">NID no.</label>
-                        <input type="number" className="w-full input bg-white" placeholder="NID number" />
+                            {/* Rider Region */}
+                            <label className="mt-5 label text-sm font-semibold">Your Region</label>
+                            <fieldset className="fieldset">
+                                <select {...register("riderRegion", { required: true })} className="select bg-white" defaultValue="">
+                                    <option value="" disabled={true}>Pick a Region</option>
+                                    {
+                                        regions.map((r, i) => <option key={i} value={r}>{r}</option>)
+                                    }
 
-                        <label className="label text-sm font-semibold">Phone Number</label>
-                        <input type="text" className="w-full input bg-white" placeholder="Phone Number" />
+                                </select>
+                            </fieldset>
+                            {
+                                errors.riderRegion && (<p className='text-secondary text-xs'>Region is required!</p>)
+                            }
 
-                        <label className="label text-sm font-semibold">Bike Registration Number</label>
-                        <input type="number" className="w-full input bg-white" placeholder="Registration Number" />
+                            {/* Rider District */}
+                            <label className="label text-sm font-semibold">Your District</label>
+                            <fieldset className="fieldset">
+                                <select {...register("riderDistrict", { required: true })} className="select bg-white" defaultValue="">
+                                    <option value="" disabled={true}>Pick a District</option>
+                                    {
+                                        districtByRegion(reiderRegion).map((r, i) => <option key={i} value={r}>{r}</option>)
+                                    }
 
-                        <label className="label text-sm font-semibold">Tell Us About Yourself</label>
-                        <input type="Text" className="w-full input bg-white" placeholder="Write about yourself" />
+                                </select>
+                            </fieldset>
+                            {
+                                errors.riderDistrict && (<p className='text-secondary text-xs'>District is required!</p>)
+                            }
 
-                        <button className="btn btn-primary text-secondary mt-4">Submit</button>
-                    </fieldset>
+                            <label className="label text-sm font-semibold">Your Religion</label>
+                            <input type="text" {...register("riderReligion", { required: true })} className="w-full input bg-white" placeholder="Religion" />
+                            {
+                                errors.riderReligion?.type == "required" && (<p className='text-secondary text-xs'>Rider's religion is required</p>)
+                            }
+
+                            <label className="label text-sm font-semibold">NID no.</label>
+                            <input type="number" {...register("riderNID", { required: true })} className="w-full input bg-white" placeholder="NID number" />
+                            {
+                                errors.riderNID?.type == "required" && (<p className='text-secondary text-xs'>Rider's NID is required</p>)
+                            }
+
+                            <label className="label text-sm font-semibold">Phone Number</label>
+                            <input type="text" {...register("riderPhone", { required: true })} className="w-full input bg-white" placeholder="Phone Number" />
+                            {
+                                errors.riderPhone?.type == "required" && (<p className='text-secondary text-xs'>Rider's phone number is required</p>)
+                            }
+
+                            <label className="label text-sm font-semibold">Bike Registration Number</label>
+                            <input type="number" {...register("riderRegNo", { required: true })} className="w-full input bg-white" placeholder="Registration Number" />
+                            {
+                                errors.riderRegNo?.type == "required" && (<p className='text-secondary text-xs'>Rider's bike registration number is required</p>)
+                            }
+
+                            <label className="label text-sm font-semibold">Tell Us About Yourself</label>
+                            <input type="Text" {...register("riderAbout", { required: true })} className="w-full input bg-white" placeholder="Write about yourself" />
+                            {
+                                errors.riderAbout?.type == "required" && (<p className='text-secondary text-xs'>Write down few words about you!</p>)
+                            }
+
+                            <button className="btn btn-primary text-secondary mt-4">Submit</button>
+                        </fieldset>
+                    </form>
                 </div>
                 <div>
                     <img src={bikeRider} className='w-116' alt="" />
