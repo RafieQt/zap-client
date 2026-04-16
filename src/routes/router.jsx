@@ -18,94 +18,99 @@ import PaymentCancel from "../pages/Dashboard/payment/PaymentCancel";
 import PaymentHistory from "../pages/Dashboard/paymentHistory/PaymentHistory";
 import RiderApplications from "../pages/Dashboard/RiderApplications/RiderApplications";
 import UserManagement from "../pages/Dashboard/userManagement/UserManagement";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    Component: RootLayout,
-    errorElement: <ErrorPage></ErrorPage>,
-    children: [
-        {
-            index: true,
-            Component: Home,
-            
-        },
-        {
-            path: "/coverage",
-            Component: Coverage,
-            loader: ()=> fetch('/warehouses.json').then(res=> res.json())
-        },
-        {
-            path: "/aboutUs",
-            Component: AboutUs,
-           
-        },
-        {
-            path: "/rider",
-            element: <PrivateRoute>
-                <Rider></Rider>
-            </PrivateRoute>,
-            loader: ()=> fetch('/warehouses.json').then(res=> res.json())
-           
-        },
-        {
-            path: "/sendParcel",
-            element: <PrivateRoute>
-                <SendParcel></SendParcel>
-            </PrivateRoute>,
-            loader: ()=> fetch('/warehouses.json').then(res=> res.json())
-           
-        },
-    ]
-  },
-  {
-    path: '/',
-    Component: AuthLayout,
-    children: [
-        {
-            path: 'signin',
-            Component: Login
-        },
-        {
-            path: 'register',
-            Component: Register
-        }
-    ]
-  },
-  {
-    path: 'dashboard',
-    element: <PrivateRoute>
-        <DashboadLayout></DashboadLayout>
-    </PrivateRoute>,
-    children:[
-        {
-            path: 'my-parcels',
-            Component: MyParcels
-        },
-        {
-            path: 'payment/:parcelId',
-            Component: Payment  
-        },
-        {
-            path: 'payment-success',
-            Component: PaymentSuccess  
-        },
-        {
-            path: 'payment-cancelled',
-            Component: PaymentCancel  
-        },
-        {
-            path: 'payment-history',
-            Component: PaymentHistory  
-        },
-        {
-            path: 'rider-applications',
-            Component: RiderApplications  
-        },
-        {
-            path: 'user-management',
-            Component: UserManagement  
-        },
-    ]
-  }
+    {
+        path: "/",
+        Component: RootLayout,
+        errorElement: <ErrorPage></ErrorPage>,
+        children: [
+            {
+                index: true,
+                Component: Home,
+
+            },
+            {
+                path: "/coverage",
+                Component: Coverage,
+                loader: () => fetch('/warehouses.json').then(res => res.json())
+            },
+            {
+                path: "/aboutUs",
+                Component: AboutUs,
+
+            },
+            {
+                path: "/rider",
+                element: <PrivateRoute>
+                    <Rider></Rider>
+                </PrivateRoute>,
+                loader: () => fetch('/warehouses.json').then(res => res.json())
+
+            },
+            {
+                path: "/sendParcel",
+                element: <PrivateRoute>
+                    <SendParcel></SendParcel>
+                </PrivateRoute>,
+                loader: () => fetch('/warehouses.json').then(res => res.json())
+
+            },
+        ]
+    },
+    {
+        path: '/',
+        Component: AuthLayout,
+        children: [
+            {
+                path: 'signin',
+                Component: Login
+            },
+            {
+                path: 'register',
+                Component: Register
+            }
+        ]
+    },
+    {
+        path: 'dashboard',
+        element: <PrivateRoute>
+            <DashboadLayout></DashboadLayout>
+        </PrivateRoute>,
+        children: [
+            {
+                path: 'my-parcels',
+                Component: MyParcels
+            },
+            {
+                path: 'payment/:parcelId',
+                Component: Payment
+            },
+            {
+                path: 'payment-success',
+                Component: PaymentSuccess
+            },
+            {
+                path: 'payment-cancelled',
+                Component: PaymentCancel
+            },
+            {
+                path: 'payment-history',
+                Component: PaymentHistory
+            },
+            {
+                path: 'rider-applications',
+                element: <AdminRoute>
+                    <RiderApplications></RiderApplications>
+                </AdminRoute>
+            },
+            {
+                path: 'user-management',
+                element: <AdminRoute>
+                    <UserManagement></UserManagement>
+                </AdminRoute>
+            },
+        ]
+    }
 ]);
