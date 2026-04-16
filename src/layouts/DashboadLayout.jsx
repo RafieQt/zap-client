@@ -6,8 +6,10 @@ import { FaBoxOpen } from "react-icons/fa";
 import { FaHistory } from "react-icons/fa";
 import { MdDirectionsBike } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
+import useRole from '../hooks/useRole';
 
 const DashboadLayout = () => {
+    const { role } = useRole();
     return (
         <div>
             <div className="drawer lg:drawer-open">
@@ -23,7 +25,7 @@ const DashboadLayout = () => {
                     </nav>
                     {/* Page content here */}
                     <Outlet></Outlet>
-                    
+
                 </div>
 
                 <div className="drawer-side is-drawer-close:overflow-visible">
@@ -44,27 +46,31 @@ const DashboadLayout = () => {
                                 </button>
                             </li>
                             <li>
-                                    <NavLink to="/dashboard/my-parcels" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="My Parcels"><FaBoxOpen /></NavLink>
-                                    
-                                    <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/my-parcels'> <FaBoxOpen />
+                                <NavLink to="/dashboard/my-parcels" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="My Parcels"><FaBoxOpen /></NavLink>
+
+                                <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/my-parcels'> <FaBoxOpen />
                                     My Parcels</NavLink></span>
                             </li>
+                            {
+                                role === "admin" && <>
+                                    <li>
+                                        <NavLink to="/dashboard/rider-applications" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="Approve Riders"><MdDirectionsBike /></NavLink>
+
+                                        <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/rider-applications'> <MdDirectionsBike />
+                                            Approve Riders</NavLink></span>
+                                    </li>
+                                    <li>
+                                        <NavLink to="/dashboard/user-management" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="User Management"><FiUsers /></NavLink>
+
+                                        <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/user-management'> <FiUsers />
+                                            User Management</NavLink></span>
+                                    </li>
+                                </>
+                            }
                             <li>
-                                    <NavLink to="/dashboard/rider-applications" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="Approve Riders"><MdDirectionsBike /></NavLink>
-                                    
-                                    <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/rider-applications'> <MdDirectionsBike />
-                                    Approve Riders</NavLink></span>
-                            </li>
-                            <li>
-                                    <NavLink to="/dashboard/user-management" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="User Management"><FiUsers /></NavLink>
-                                    
-                                    <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/user-management'> <FiUsers />
-                                    User Management</NavLink></span>
-                            </li>
-                            <li>
-                                    <NavLink to="/dashboard/payment-history" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="Payment History"><FaHistory /></NavLink>
-                                    
-                                    <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/payment-history'> <FaHistory />
+                                <NavLink to="/dashboard/payment-history" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="Payment History"><FaHistory /></NavLink>
+
+                                <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/payment-history'> <FaHistory />
                                     Payment History</NavLink></span>
                             </li>
 
