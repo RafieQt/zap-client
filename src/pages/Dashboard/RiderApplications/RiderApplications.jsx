@@ -43,7 +43,7 @@ const RiderApplications = () => {
     return (
         <div>
             <div className='m-8'>
-                <h2>Rider Applications: {riders.length}</h2>
+                <h2 className='text-secondary font-extrabold text-4xl pb-10'>Rider Applications: {riders.length}</h2>
 
                 <div>
                     <div className="overflow-x-auto">

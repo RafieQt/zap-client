@@ -57,8 +57,8 @@ const MyParcels = () => {
         });
     }
     return (
-        <div>
-            <h2>All my Parcels: {parcels.length}</h2>
+        <div className='p-8'>
+            <h2 className='text-secondary font-extrabold text-4xl pb-10'>All my Parcels: {parcels.length}</h2>
 
             <div className="overflow-x-auto">
                 <table className="table table-zebra">

@@ -5,6 +5,7 @@ import DashboardLogo from '../components/logo/DashboardLogo';
 import { FaBoxOpen } from "react-icons/fa";
 import { FaHistory } from "react-icons/fa";
 import { MdDirectionsBike } from "react-icons/md";
+import { FiUsers } from "react-icons/fi";
 
 const DashboadLayout = () => {
     return (
@@ -53,6 +54,12 @@ const DashboadLayout = () => {
                                     
                                     <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/rider-applications'> <MdDirectionsBike />
                                     Approve Riders</NavLink></span>
+                            </li>
+                            <li>
+                                    <NavLink to="/dashboard/user-management" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="User Management"><FiUsers /></NavLink>
+                                    
+                                    <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/user-management'> <FiUsers />
+                                    User Management</NavLink></span>
                             </li>
                             <li>
                                     <NavLink to="/dashboard/payment-history" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="Payment History"><FaHistory /></NavLink>
