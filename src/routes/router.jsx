@@ -16,6 +16,7 @@ import Payment from "../pages/Dashboard/payment/Payment";
 import PaymentSuccess from "../pages/Dashboard/payment/PaymentSuccess";
 import PaymentCancel from "../pages/Dashboard/payment/PaymentCancel";
 import PaymentHistory from "../pages/Dashboard/paymentHistory/PaymentHistory";
+import RiderApplications from "../pages/Dashboard/RiderApplications/RiderApplications";
 
 export const router = createBrowserRouter([
   {
@@ -95,6 +96,10 @@ export const router = createBrowserRouter([
         {
             path: 'payment-history',
             Component: PaymentHistory  
+        },
+        {
+            path: 'rider-applications',
+            Component: RiderApplications  
         },
     ]
   }
