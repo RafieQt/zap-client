@@ -2,10 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { FaCheckSquare } from "react-icons/fa";
+import Swal from 'sweetalert2';
+import { MdDelete } from "react-icons/md";
+
 
 const RiderApplications = () => {
     const axiosSecure = useAxiosSecure();
-    const { data: riders = [] } = useQuery({
+    const {refetch, data: riders = [] } = useQuery({
         queryKey: ['riders', 'pending'],
         queryFn: async () => {
             const res = await axiosSecure.get('/riders');
@@ -13,8 +16,29 @@ const RiderApplications = () => {
         }
     })
 
-    const handleApproval = (id)=>{
-        console.log(id);
+    const updateRiderStatus = (rider, status) => {
+        const updateInfo = { status: status, email: rider.riderMail };
+        axiosSecure.patch(`riders/${rider._id}`, updateInfo).then(res => {
+            if (res.data.modifiedCount) {
+                refetch();
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `Rider's status has been set to ${status}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        })
+    }
+
+    const handleApproval = (rider) => {
+        updateRiderStatus(rider, "approved")
+
+    }
+
+    const handleDelete = (rider) => {
+        updateRiderStatus(rider, "rejected")
     }
     return (
         <div>
@@ -36,17 +60,24 @@ const RiderApplications = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {riders.map((rider, i)=>{
+                                {riders.map((rider, i) => {
                                     return (<tr>
-                                    <th>{i+1}</th>
-                                    <td>{rider.riderName}</td>
-                                    <td>{rider.riderMail}</td>
-                                    <td>{rider.riderRegion}</td>
-                                    <td>{rider.status}</td>
-                                    <td><button onClick={()=>handleApproval(rider._id)} className='btn p-2'><FaCheckSquare /></button></td>
-                                </tr>)
+                                        <th>{i + 1}</th>
+                                        <td>{rider.riderName}</td>
+                                        <td>{rider.riderMail}</td>
+                                        <td>{rider.riderRegion}</td>
+                                        <td>
+                                            <p className={`${rider.status === "pending" ? 'text-red-500' : 'text-green-500'}`}>{rider.status}</p>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => handleApproval(rider)} className='btn p-2'><FaCheckSquare /></button>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => handleDelete(rider)} className='btn p-2'><MdDelete /></button>
+                                        </td>
+                                    </tr>)
                                 })}
-                                
+
                             </tbody>
                         </table>
                     </div>
