@@ -2,16 +2,41 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import moment from 'moment';
+import { FaUserPlus, FaUserShield, FaUserSlash } from 'react-icons/fa';
+import { FiShieldOff } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 
 const UserManagement = () => {
     const axiosSecure = useAxiosSecure();
-    const { data: users = [] } = useQuery({
+    const {refetch, data: users = [] } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const res = await axiosSecure.get(`/users`);
             return res.data;
         }
     })
+
+    const handleMakeUser = (user, role) => {
+        const roleInfo = { role: role }
+        axiosSecure.patch(`/users/${user._id}`, roleInfo).then(res => {
+            if (res.data.modifiedCount) {
+                refetch();
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `${user.displayName} has been marked as ${role}!`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        })
+    }
+    const handleMakeAdmin = (user)=>{
+        handleMakeUser(user, "admin")
+    }
+    const handleRemoveAdmin = (user)=>{
+        handleMakeUser(user, "user");
+    }
 
     return (
         <div className='p-8'>
@@ -28,7 +53,8 @@ const UserManagement = () => {
                                 <th>Name</th>
                                 <th>role</th>
                                 <th>Favorite Color</th>
-                                <th></th>
+                                <th>Admin Action</th>
+                                <th>other Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,7 +84,15 @@ const UserManagement = () => {
                                     </td>
                                     <td>{moment(user.createdAt).format("YYYY-MM-DD HH:mm")}</td>
                                     <th>
-                                        <button className="btn btn-ghost btn-xs">details</button>
+                                        {
+                                            user.role === "admin" ? <button onClick={()=>handleRemoveAdmin(user)} className="btn bg-red-300"><FiShieldOff /></button> :
+                                            <button onClick={()=>handleMakeAdmin(user)} className="btn bg-green-300"><FaUserShield /> </button>
+                                        }
+
+                                    </th>
+                                    <th>
+                                        <button className="btn"><FaUserSlash /></button>
+                                        <button className="btn"><FaUserPlus /></button>
                                     </th>
                                 </tr>)
                             })}
