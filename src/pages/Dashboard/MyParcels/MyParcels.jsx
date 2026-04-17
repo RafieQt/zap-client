@@ -67,13 +67,13 @@ const MyParcels = () => {
                         <tr>
                             <th>No.</th>
                             <th>Parcel Name</th>
-                            <th>Parcel Type</th>
-                            <th>Parcel Weight</th>
+                            
                             <th>Sender Name</th>
                             <th>Receiver Name</th>
                             <th>Parcel Cost</th>
                             <th>Payment</th>
                             <th>Delivery status</th>
+                            <th>Tracking ID</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -82,8 +82,7 @@ const MyParcels = () => {
                             parcels.map((parcel, i) => <tr key={parcel._id}>
                                 <th>{i + 1}</th>
                                 <td>{parcel.parcelName}</td>
-                                <td>{parcel.parcelType}</td>
-                                <td>{parcel.parcelWeight}</td>
+                                
                                 <td>{parcel.senderName}</td>
                                 <td>{parcel.receiverName}</td>
                                 <td>{parcel.cost}</td>
@@ -93,6 +92,7 @@ const MyParcels = () => {
 
                                 }</td>
                                 <td>{parcel.deliveryStatus}</td>
+                                <td>{parcel.trackingId}</td>
                                 <td>
                                     <button className="btn btn-square hover:bg-primary mr-2">
                                         <MdEditSquare />

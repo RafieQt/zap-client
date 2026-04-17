@@ -4,7 +4,7 @@ import Logo from '../components/logo/Logo';
 import DashboardLogo from '../components/logo/DashboardLogo';
 import { FaBoxOpen } from "react-icons/fa";
 import { FaHistory } from "react-icons/fa";
-import { MdDirectionsBike } from "react-icons/md";
+import { MdAssignmentInd, MdDirectionsBike } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
 import useRole from '../hooks/useRole';
 
@@ -64,6 +64,12 @@ const DashboadLayout = () => {
 
                                         <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/user-management'> <FiUsers />
                                             User Management</NavLink></span>
+                                    </li>
+                                    <li>
+                                        <NavLink to="/dashboard/assign-rider" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="Assign Riders"><MdAssignmentInd /></NavLink>
+
+                                        <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/assign-rider'> <MdAssignmentInd />
+                                            Assign Riders</NavLink></span>
                                     </li>
                                 </>
                             }
