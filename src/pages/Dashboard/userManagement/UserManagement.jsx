@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import moment from 'moment';
 import { FaUserPlus, FaUserShield, FaUserSlash } from 'react-icons/fa';
@@ -8,10 +8,12 @@ import Swal from 'sweetalert2';
 
 const UserManagement = () => {
     const axiosSecure = useAxiosSecure();
-    const {refetch, data: users = [] } = useQuery({
-        queryKey: ['users'],
+    const [search, setSearch] = useState("");
+
+    const { refetch, data: users = [] } = useQuery({
+        queryKey: ['users', search],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/users`);
+            const res = await axiosSecure.get(`/users?searchText=${search}`);
             return res.data;
         }
     })
@@ -31,10 +33,10 @@ const UserManagement = () => {
             }
         })
     }
-    const handleMakeAdmin = (user)=>{
+    const handleMakeAdmin = (user) => {
         handleMakeUser(user, "admin")
     }
-    const handleRemoveAdmin = (user)=>{
+    const handleRemoveAdmin = (user) => {
         handleMakeUser(user, "user");
     }
 
@@ -42,6 +44,26 @@ const UserManagement = () => {
         <div className='p-8'>
             <h2 className='text-secondary font-extrabold text-4xl pb-10'>Manage Users: {users.length}</h2>
             <div>
+                <label className="input bg-[#F8F8F8] mb-2">
+                    <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <g
+                            strokeLinejoin="round"
+                            strokeLinecap="round"
+                            strokeWidth="2.5"
+                            fill="none"
+                            stroke="currentColor"
+                        >
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.3-4.3"></path>
+                        </g>
+                    </svg>
+                    <input 
+                    onChange={(e)=>setSearch(e.target.value)}
+                    type="search" 
+                    className="grow " 
+                    placeholder="Search users" />
+                    
+                </label>
                 <div className="overflow-x-auto">
                     <table className="table">
                         {/* head */}
@@ -85,8 +107,8 @@ const UserManagement = () => {
                                     <td>{moment(user.createdAt).format("YYYY-MM-DD HH:mm")}</td>
                                     <th>
                                         {
-                                            user.role === "admin" ? <button onClick={()=>handleRemoveAdmin(user)} className="btn bg-red-300"><FiShieldOff /></button> :
-                                            <button onClick={()=>handleMakeAdmin(user)} className="btn bg-green-300"><FaUserShield /> </button>
+                                            user.role === "admin" ? <button onClick={() => handleRemoveAdmin(user)} className="btn bg-red-300"><FiShieldOff /></button> :
+                                                <button onClick={() => handleMakeAdmin(user)} className="btn bg-green-300"><FaUserShield /> </button>
                                         }
 
                                     </th>

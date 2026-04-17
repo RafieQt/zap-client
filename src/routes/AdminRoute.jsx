@@ -9,7 +9,7 @@ const AdminRoute = ({children}) => {
     const {user, loading} = useAuth();
     const {role, roleLoading} = useRole();
     if(loading || roleLoading){
-        <Loading></Loading>
+        return <Loading></Loading>
     }
     if(!user){
         return <Navigate state={location.pathname} to="/signin"></Navigate>
