@@ -8,22 +8,22 @@ const GoogleLogin = () => {
     const { signInWithGoogle } = useAuth();
     let navigate = useNavigate();
     let location = useLocation();
-    
+
 
     const handleGoogleLogin = () => {
         signInWithGoogle()
-            .then(res => {
-                console.log("first ",res);
+        signInWithGoogle()
+            .then(async (res) => {
                 const userInfo = {
                     email: res.user.email,
                     displayName: res.user.displayName,
                     photoURL: res.user.photoURL
-                }
-                
-                axios.post('http://localhost:3000/users', userInfo).then((res)=>{
-                    console.log("user data has been stored.", res);
-                    navigate(location?.state || '/')
-                })
+                };
+
+                await axios.post('http://localhost:3000/users', userInfo);
+
+                const from = location.state?.from?.pathname || '/';
+                navigate(from, { replace: true });
             })
             .catch(error => console.log(error.code))
     }

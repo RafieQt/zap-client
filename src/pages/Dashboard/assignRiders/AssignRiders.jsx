@@ -16,6 +16,15 @@ const AssignRiders = () => {
         }
     })
 
+    const {data: riders=[]} = useQuery({
+        queryKey:['riders', selectedParcel?.senderDistrict, 'Available'],
+        enabled: !!selectedParcel?.senderDistrict,
+        queryFn:async()=>{
+            const res = await axiosSecure.get(`/riders?status=approved&district=${selectedParcel.senderDistrict}&workStatus=Available`);
+            return res.data;
+        }
+    })
+
     const openAssignRiderModal = (parcel)=>{
         setSelectedParcel(parcel);
         riderModalRef.current.showModal();
@@ -40,7 +49,7 @@ const AssignRiders = () => {
                         </thead>
                         <tbody>
                             {parcels.map((parcel, index) => {
-                                return (<tr>
+                                return (<tr key={parcel._id}>
                                     <th>{index + 1}</th>
                                     <td>{parcel.senderEmail}</td>
                                     <td>{parcel.cost}</td>
@@ -63,10 +72,9 @@ const AssignRiders = () => {
                     </table>
                 </div>
                 {/* Open the modal using document.getElementById('ID').showModal() method */}
-                <button className="btn" onClick={() => document.getElementById('my_modal_5').showModal()}>open modal</button>
                 <dialog ref={riderModalRef} className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box bg-[#F8F8F8]">
-                        <h3 className="font-bold text-lg">Hello!</h3>
+                        <h3 className="font-bold text-lg">Riders: {riders.length}</h3>
                         <p className="py-4">Press ESC key or click the button below to close</p>
                         <div className="modal-action ">
                             <form method="dialog">
