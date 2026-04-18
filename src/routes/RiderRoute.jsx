@@ -1,11 +1,9 @@
 import React from 'react';
 import useAuth from '../hooks/useAuth';
-import Loading from '../components/loading/Loading';
 import useRole from '../hooks/useRole';
-import { Navigate } from 'react-router';
-import Forbidden from '../components/forbidden/Forbidden';
+import Loading from '../components/loading/Loading';
 
-const AdminRoute = ({children}) => {
+const RiderRoute = ({children}) => {
     const {user, loading} = useAuth();
     const {role, roleLoading} = useRole();
     if(!user || roleLoading || loading){
@@ -14,10 +12,10 @@ const AdminRoute = ({children}) => {
     if(!user){
         return <Navigate state={location.pathname} to="/signin"></Navigate>
     }
-    if(role!=="admin"){
+    if(role!=="rider"){
         return <Forbidden></Forbidden>
     }
     return children;
 };
 
-export default AdminRoute;
+export default RiderRoute;

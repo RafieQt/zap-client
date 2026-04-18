@@ -4,7 +4,7 @@ import Logo from '../components/logo/Logo';
 import DashboardLogo from '../components/logo/DashboardLogo';
 import { FaBoxOpen } from "react-icons/fa";
 import { FaHistory } from "react-icons/fa";
-import { MdAssignmentInd, MdDirectionsBike } from "react-icons/md";
+import { MdAssignmentInd, MdDirectionsBike, MdEmergencyShare } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
 import useRole from '../hooks/useRole';
 
@@ -51,6 +51,18 @@ const DashboadLayout = () => {
                                 <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/my-parcels'> <FaBoxOpen />
                                     My Parcels</NavLink></span>
                             </li>
+                            {
+                                role === 'rider' && <>
+                                    <li>
+                                        <NavLink to="/dashboard/assigned-deliveries" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="Assigned Deliveries"><MdEmergencyShare /></NavLink>
+
+                                        <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/assigned-deliveries'> <MdEmergencyShare />
+                                            Assigned Deliveries</NavLink></span>
+                                    </li>
+                                </>
+                            }
+
+                            {/* Admin only links */}
                             {
                                 role === "admin" && <>
                                     <li>
