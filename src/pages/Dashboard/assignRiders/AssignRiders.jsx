@@ -2,13 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useRef, useState } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import moment from 'moment/moment';
+import Swal from 'sweetalert2';
 
 const AssignRiders = () => {
     const axiosSecure = useAxiosSecure();
-    const[selectedParcel, setSelectedParcel] = useState(null);
+    const [selectedParcel, setSelectedParcel] = useState(null);
     const riderModalRef = useRef();
 
-    const { data: parcels = [] } = useQuery({
+    const { data: parcels = [], refetch: parcelRefetch } = useQuery({
         queryKey: ['parcels', 'pending'],
         queryFn: async () => {
             const res = await axiosSecure.get('/parcels?deliveryStatus=pending');
@@ -16,18 +17,40 @@ const AssignRiders = () => {
         }
     })
 
-    const {data: riders=[]} = useQuery({
-        queryKey:['riders', selectedParcel?.senderDistrict, 'Available'],
+    const { data: riders = [] } = useQuery({
+        queryKey: ['riders', selectedParcel?.senderDistrict, 'Available'],
         enabled: !!selectedParcel?.senderDistrict,
-        queryFn:async()=>{
+        queryFn: async () => {
             const res = await axiosSecure.get(`/riders?status=approved&district=${selectedParcel.senderDistrict}&workStatus=Available`);
             return res.data;
         }
     })
 
-    const openAssignRiderModal = (parcel)=>{
+    const openAssignRiderModal = (parcel) => {
         setSelectedParcel(parcel);
         riderModalRef.current.showModal();
+    }
+
+    const handleAssignRider = (rider) => {
+        const riderAssignInfo = {
+            riderId: rider._id,
+            riderEmail: rider.riderMail,
+            riderName: rider.riderName,
+            parcelId: selectedParcel._id
+        }
+        axiosSecure.patch(`/parcels/${selectedParcel._id}`, riderAssignInfo).then(res => {
+            if (res.data.modifiedCount) {
+                parcelRefetch();
+                riderModalRef.current.close();
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `Rider has been assigned!`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        })
     }
 
     return (
@@ -63,7 +86,7 @@ const AssignRiders = () => {
                                         <br />
                                         <span className="badge badge-ghost badge-sm">{parcel.senderDistrict}, {parcel.senderRegion}</span>
                                     </td>
-                                    <td><button onClick={()=>openAssignRiderModal(parcel)} className='btn bg-primary text-secondary'>Assign Rider</button></td>
+                                    <td><button onClick={() => openAssignRiderModal(parcel)} className='btn bg-primary text-secondary'>Find Riders</button></td>
                                 </tr>)
                             })}
 
@@ -75,7 +98,35 @@ const AssignRiders = () => {
                 <dialog ref={riderModalRef} className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box bg-[#F8F8F8]">
                         <h3 className="font-bold text-lg">Riders: {riders.length}</h3>
-                        <p className="py-4">Press ESC key or click the button below to close</p>
+                        <div className="overflow-x-auto">
+                            <table className="table table-zebra">
+                                {/* head */}
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>Contacts</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {riders.map((rider, index) => {
+                                        return (<tr key={rider._id}>
+                                            <th>{index + 1}</th>
+                                            <td>{rider.riderName}</td>
+                                            <td>
+                                                {rider.riderMail}
+                                                <br />
+                                                <span className="badge badge-ghost badge-sm">Phone: {rider.riderPhone}</span>
+                                            </td>
+                                            <td><button onClick={() => handleAssignRider(rider)} className='btn bg-primary text-secondary'>Assign</button></td>
+                                        </tr>)
+                                    })}
+
+
+                                </tbody>
+                            </table>
+                        </div>
                         <div className="modal-action ">
                             <form method="dialog">
                                 {/* if there is a button in form, it will close the modal */}
