@@ -55,7 +55,8 @@ const RiderApplications = () => {
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Region</th>
-                                    <th>status</th>
+                                    <th>Application Status</th>
+                                    <th>Work Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -69,6 +70,7 @@ const RiderApplications = () => {
                                         <td>
                                             <p className={`${rider.status === "pending" ? 'text-red-500' : 'text-green-500'}`}>{rider.status}</p>
                                         </td>
+                                        <td>{rider.workStatus}</td>
                                         <td>
                                             <button onClick={() => handleApproval(rider)} className='btn p-2'><FaCheckSquare /></button>
                                         </td>
