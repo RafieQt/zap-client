@@ -16,15 +16,18 @@ const AssignedDeliveries = () => {
         }
     })
 
-    const handleAcceptDelivery = (parcel) => {
-        const statusInfo = { deliveryStatus: "rider-arriving" };
+    
+
+    const handleStatusUpdate = (parcel, status) => {
+        const statusInfo = { deliveryStatus: status };
+        let message = `Parcel status has been update to ${status.split("-").join(" ")}`;
         axiosSecure.patch(`/parcels/${parcel._id}/status`, statusInfo).then(res => {
             if (res.data.modifiedCount) {
                 refetch();
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: `Thank you for accepting!`,
+                    title: message,
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -48,6 +51,7 @@ const AssignedDeliveries = () => {
                             <th>Pickup Location</th>
                             <th>Delivery Location</th>
                             <th>Actions</th>
+                            <th>Update</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,10 +76,17 @@ const AssignedDeliveries = () => {
                                 <td>
                                     {
                                         parcel.deliveryStatus === 'rider-assigned' ? <>
-                                            <button onClick={() => handleAcceptDelivery(parcel)} className='btn bg-primary text-secondary'>Accept</button>
+                                            <button onClick={() => handleStatusUpdate(parcel, "rider-arriving")} className='btn bg-primary text-secondary'>Accept</button>
                                             <button className='btn bg-red-300 text-secondary'>Reject</button>
                                         </> : <span className='text-secondary'>Accepted.</span>
                                     }
+                                </td>
+                                <td>
+                                    
+
+                                        <button onClick={() => handleStatusUpdate(parcel, "picked-up")} className='btn bg-primary text-secondary'>Picked Up!</button>
+                                        <button onClick={() => handleStatusUpdate(parcel, "parcel-delivered")} className='btn bg-primary text-secondary ml-2'>Delivered!</button>
+                                    
                                 </td>
                             </tr>)
                         })}
