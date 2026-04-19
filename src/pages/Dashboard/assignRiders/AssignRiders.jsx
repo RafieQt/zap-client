@@ -17,11 +17,12 @@ const AssignRiders = () => {
         }
     })
 
-    const { data: riders = [] } = useQuery({
+    const { refetch:riderRefetch ,data: riders = [] } = useQuery({
         queryKey: ['riders', selectedParcel?.senderDistrict, 'Available'],
         enabled: !!selectedParcel?.senderDistrict,
         queryFn: async () => {
             const res = await axiosSecure.get(`/riders?status=approved&district=${selectedParcel.senderDistrict}&workStatus=Available`);
+            
             return res.data;
         }
     })
@@ -42,6 +43,7 @@ const AssignRiders = () => {
         axiosSecure.patch(`/parcels/${selectedParcel._id}`, riderAssignInfo).then(res => {
             if (res.data.modifiedCount) {
                 parcelRefetch();
+                riderRefetch();
                 riderModalRef.current.close();
                 Swal.fire({
                     position: "top-end",
