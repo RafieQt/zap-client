@@ -81,7 +81,7 @@ const UserManagement = () => {
                         </thead>
                         <tbody>
                             {users.map((user, i) => {
-                                return (<tr>
+                                return (<tr key={user._id}>
                                     <th>
                                         {i + 1}
                                     </th>
