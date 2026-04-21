@@ -53,7 +53,7 @@ const Register = () => {
                 });
             })
             .then(userInfo => {
-                // Create user in database - use regular axios, not axiosSecure
+                // Create user in database - using regular axios
                 return axios.post('http://localhost:3000/users', userInfo);
             })
             .then(res => {

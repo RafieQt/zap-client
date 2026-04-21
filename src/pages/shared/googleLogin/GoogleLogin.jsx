@@ -11,7 +11,7 @@ const GoogleLogin = () => {
 
 
     const handleGoogleLogin = () => {
-        signInWithGoogle()
+        
         signInWithGoogle()
             .then(async (res) => {
                 const userInfo = {
@@ -20,7 +20,12 @@ const GoogleLogin = () => {
                     photoURL: res.user.photoURL
                 };
 
+                try {
                 await axios.post('http://localhost:3000/users', userInfo);
+            } catch (err) {
+                console.error("User save failed:", err);
+                // Don't block navigation
+            }
 
                 const from = location.state?.from?.pathname || '/';
                 navigate(from, { replace: true });
