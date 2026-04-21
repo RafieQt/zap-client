@@ -14,6 +14,8 @@ const GoogleLogin = () => {
         
         signInWithGoogle()
             .then(async (res) => {
+                const user = res.user;
+                console.log(user);
                 const userInfo = {
                     email: res.user.email,
                     displayName: res.user.displayName,
@@ -22,6 +24,8 @@ const GoogleLogin = () => {
 
                 try {
                 await axios.post('http://localhost:3000/users', userInfo);
+                await user.reload();
+                console.log(res)
             } catch (err) {
                 console.error("User save failed:", err);
                 // Don't block navigation

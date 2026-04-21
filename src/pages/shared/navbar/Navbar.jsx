@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Logo from '../../../components/logo/Logo';
 import { NavLink, Link } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
@@ -13,12 +13,12 @@ const Navbar = () => {
         <li><NavLink to=''>Pricing</NavLink></li>
         {user && <li><NavLink to='/sendParcel'>Send Parcel</NavLink></li>}
         {user && <li><NavLink to='/dashboard/my-parcels'>My Parcel</NavLink></li>}
-        <li><NavLink>Blog</NavLink></li>
+
         <li><NavLink>Contact</NavLink></li>
 
     </>
 
-    
+
 
     const handleLogout = () => {
         logout()
@@ -26,9 +26,11 @@ const Navbar = () => {
             .catch(error => console.log(error.code));
     }
 
+
+
     return (
         <div>
-            
+
             <div className="navbar bg-white rounded-2xl shadow-sm">
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -54,7 +56,15 @@ const Navbar = () => {
 
                     {
                         user ? <div className='flex gap-3'>
-                            <img className='rounded-full w-9 h-9 border-black' src={user.photoURL} alt="" />
+                            <img
+                                className="rounded-full w-9 h-9 border-black"
+                                src={user?.photoURL || "https://via.placeholder.com/40"}
+                                referrerPolicy="no-referrer"
+                                onError={(e) => {
+                                    e.target.src = "https://via.placeholder.com/40";
+                                }}
+                                alt="profile"
+                            />
                             <Link onClick={handleLogout} to="/" className="btn rounded-xl">Logout</Link>
                         </div> :
 
