@@ -52,13 +52,8 @@ const DashboadLayout = () => {
                                 <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/my-parcels'> <FaBoxOpen />
                                     My Parcels</NavLink></span>
                             </li>
-                            <li>
-                                <NavLink to="/dashboard" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="My Home"><IoMdHome /></NavLink>
 
-                                <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard'> <IoMdHome />
-                                    My Home</NavLink></span>
-                            </li>
-                            
+
                             {/* rider only links */}
                             {
                                 role === 'rider' && <>
@@ -80,6 +75,12 @@ const DashboadLayout = () => {
                             {/* Admin only links */}
                             {
                                 role === "admin" && <>
+                                    <li>
+                                        <NavLink to="/dashboard" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="My Home"><IoMdHome /></NavLink>
+
+                                        <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard'> <IoMdHome />
+                                            My Home</NavLink></span>
+                                    </li>
                                     <li>
                                         <NavLink to="/dashboard/rider-applications" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="Approve Riders"><MdDirectionsBike /></NavLink>
 
