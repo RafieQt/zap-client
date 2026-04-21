@@ -2,10 +2,11 @@
 import Logo from '../../../components/logo/Logo';
 import { NavLink, Link } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
+import Loading from '../../../components/loading/Loading';
 
 
 const Navbar = () => {
-    const { logout, user } = useAuth();
+    const { logout, user, loading} = useAuth();
     const links = <>
         <li><NavLink>Services</NavLink></li>
         <li><NavLink to='/coverage'>Coverage</NavLink></li>
@@ -18,7 +19,9 @@ const Navbar = () => {
 
     </>
 
-
+    if(loading){
+        return <Loading></Loading>
+    }
 
     const handleLogout = () => {
         logout()
