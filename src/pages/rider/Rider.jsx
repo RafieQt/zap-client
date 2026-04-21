@@ -1,13 +1,15 @@
 import React from 'react';
-import bikeRider from '../../assets/agent-pending.png';
+
 import { useForm, useWatch } from 'react-hook-form';
-import useAuth from '../../hooks/useAuth';
+// import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useLoaderData } from 'react-router';
 import Swal from 'sweetalert2';
+import ride from '../../assets/animations/rider.json'
+import Lottie from 'lottie-react';
 
 const Rider = () => {
-    const { user } = useAuth();
+    
     const axiosSecure = useAxiosSecure();
 
     const { register, handleSubmit, control, formState: { errors } } = useForm();
@@ -75,7 +77,7 @@ const Rider = () => {
                             {/* Rider Region */}
                             <label className="mt-5 label text-sm font-semibold">Your Region</label>
                             <fieldset className="fieldset">
-                                <select {...register("riderRegion", { required: true })} className="select bg-white" defaultValue="">
+                                <select {...register("riderRegion", { required: true })} className="w-full select bg-white" defaultValue="">
                                     <option value="" disabled={true}>Pick a Region</option>
                                     {
                                         regions.map((r, i) => <option key={i} value={r}>{r}</option>)
@@ -90,7 +92,7 @@ const Rider = () => {
                             {/* Rider District */}
                             <label className="label text-sm font-semibold">Your District</label>
                             <fieldset className="fieldset">
-                                <select {...register("riderDistrict", { required: true })} className="select bg-white" defaultValue="">
+                                <select {...register("riderDistrict", { required: true })} className="w-full select bg-white" defaultValue="">
                                     <option value="" disabled={true}>Pick a District</option>
                                     {
                                         districtByRegion(reiderRegion).map((r, i) => <option key={i} value={r}>{r}</option>)
@@ -148,7 +150,12 @@ const Rider = () => {
                     </form>
                 </div>
                 <div>
-                    <img src={bikeRider} className='w-116' alt="" />
+                    
+                    <Lottie className='w-116 mt-20'
+                        animationData={ride}
+                        loop={true}
+                        autoplay={true}
+                    />
                 </div>
             </div>
 

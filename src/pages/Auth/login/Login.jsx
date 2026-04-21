@@ -1,11 +1,15 @@
 import React from 'react';
 import Navbar from '../../shared/navbar/Navbar';
 import Footer from '../../shared/Footer/Footer';
-import authImg from '../../../assets/authImage.png'
+
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import GoogleLogin from '../../shared/googleLogin/GoogleLogin';
+import loginAnimation from '../../../assets/animations/login.json'
+import Lottie from 'lottie-react';
+
+
 const Login = () => {
 
     const { register, handleSubmit, formState: { errors }, } = useForm();
@@ -14,9 +18,9 @@ const Login = () => {
 
     let navigate = useNavigate();
     let location = useLocation();
-    
-    
-    
+
+
+
 
     const handleLogin = (data) => {
         signInUser(data.email, data.password)
@@ -58,7 +62,7 @@ const Login = () => {
 
                         <div className='text-[#71717A] text-xl'>Don't Have an Account? <Link state={location} className='text-primary hover:text-secondary transition-transform duration-300' to='/register'>Register</Link></div>
 
-                        
+
 
 
                     </fieldset>
@@ -66,7 +70,12 @@ const Login = () => {
                 <GoogleLogin location={location.state}></GoogleLogin>
             </div>
             <div className='bg-[#fafdf0] w-2xl flex items-center '>
-                <img src={authImg} className='' alt="" />
+                {/* <img src={authImg} className='' alt="" /> */}
+                <Lottie className='w-116 mx-auto '
+                    animationData={loginAnimation}
+                    loop={true}
+                    autoplay={true}
+                />
             </div>
         </div>
 

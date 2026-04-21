@@ -7,7 +7,7 @@ import { FaHistory } from "react-icons/fa";
 import { MdAssignmentInd, MdDirectionsBike, MdEmergencyShare } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
 import useRole from '../hooks/useRole';
-import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
+import { IoMdCheckmarkCircleOutline, IoMdHome } from 'react-icons/io';
 
 const DashboadLayout = () => {
     const { role } = useRole();
@@ -51,6 +51,12 @@ const DashboadLayout = () => {
 
                                 <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard/my-parcels'> <FaBoxOpen />
                                     My Parcels</NavLink></span>
+                            </li>
+                            <li>
+                                <NavLink to="/dashboard" className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:hidden" data-tip="My Home"><IoMdHome /></NavLink>
+
+                                <span className="is-drawer-close:hidden"><NavLink className="flex gap-1 items-center" to='/dashboard'> <IoMdHome />
+                                    My Home</NavLink></span>
                             </li>
                             
                             {/* rider only links */}

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import authImg from '../../../assets/authImage.png'
+
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
@@ -9,6 +9,8 @@ import Swal from 'sweetalert2';
 import GoogleLogin from '../../shared/googleLogin/GoogleLogin';
 import profileImage from '../../../assets/profileImage.png'
 import axios from 'axios';
+import Lottie from 'lottie-react';
+import regAnimation from '../../../assets/animations/register.json'
 
 
 
@@ -19,7 +21,7 @@ const Register = () => {
     const { registerUser } = useAuth();
     const fileRef = useRef(null);
     const { ref, ...rest } = register("photo", { required: true });
-   
+
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -130,7 +132,12 @@ const Register = () => {
                 <GoogleLogin></GoogleLogin>
             </div>
             <div className='bg-[#fafdf0] w-2xl flex items-center '>
-                <img src={authImg} className='' alt="" />
+                {/* <img src={authImg} className='' alt="" /> */}
+                <Lottie className='w-116 mx-auto'
+                    animationData={regAnimation}
+                    loop={true}
+                    autoplay={true}
+                />
             </div>
         </div>
     );

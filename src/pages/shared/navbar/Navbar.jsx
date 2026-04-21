@@ -8,14 +8,14 @@ import Loading from '../../../components/loading/Loading';
 const Navbar = () => {
     const { logout, user, loading} = useAuth();
     const links = <>
-        <li><NavLink>Services</NavLink></li>
+        {/* <li><NavLink>Services</NavLink></li> */}
         <li><NavLink to='/coverage'>Coverage</NavLink></li>
         <li><NavLink to='/aboutUs'>About Us</NavLink></li>
         <li><NavLink to=''>Pricing</NavLink></li>
         {user && <li><NavLink to='/sendParcel'>Send Parcel</NavLink></li>}
         {user && <li><NavLink to='/dashboard/my-parcels'>My Parcel</NavLink></li>}
 
-        <li><NavLink>Contact</NavLink></li>
+        {/* <li><NavLink>Contact</NavLink></li> */}
 
     </>
 
