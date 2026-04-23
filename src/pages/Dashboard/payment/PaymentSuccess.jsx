@@ -55,7 +55,7 @@ const PaymentSuccess = () => {
                     onClick={() => (window.location.href = "/")}
                     className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-medium transition"
                 >
-                    Continue Shopping
+                    Continue Exploring!
                 </button>
             </div>
         </div>
