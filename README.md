@@ -1,16 +1,72 @@
-# React + Vite
+# 🚀 Zapper - Parcel Delivery System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Zapper is a full-stack parcel delivery platform that allows users to send parcels, make secure payments, and track service availability using an interactive map. The system is built with role-based access control for **Users, Riders, and Admins**, enabling a complete delivery management workflow.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### ⚛️ Frontend
+- React 19
+- Vite
+- Tailwind CSS
+- DaisyUI
+- React Router
+- Axios
+- React Query (@tanstack/react-query)
+- React Hook Form
+- React Icons
+- React Leaflet
+- Leaflet
+- Swiper
+- SweetAlert2
+- Recharts
+- Moment.js
+- Lottie React
 
-## React Compiler
+### 🔐 Authentication & Services
+- Firebase Authentication
+- Stripe Payment Gateway
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📌 Features
 
-## Expanding the ESLint configuration
+### 👤 User Features
+- Send parcel delivery requests
+- View service coverage using interactive map (Leaflet)
+- Make secure payments via Stripe
+- Apply for rider position
+- Track parcel-related activities
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🛵 Rider Features
+- Apply to become a rider
+- Wait for admin approval
+- Handle assigned deliveries (after approval)
+
+### 🛠 Admin Features
+- Approve or reject rider applications
+- Manage users and riders
+- Monitor system activities
+- Oversee parcel delivery operations
+
+---
+
+## 🧠 Core Functionalities
+
+- Role-based authentication system (User / Rider / Admin)
+- Secure payment integration using Stripe
+- Interactive service area map using Leaflet
+- Rider application & approval workflow
+- Modern responsive UI with Tailwind CSS & DaisyUI
+- Efficient data fetching with React Query
+
+---
+
+## 🧰 Tech Stack
+
+
+---
+
+## 📦 Installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/zap-client.git
+cd zap-client
