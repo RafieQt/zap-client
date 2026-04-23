@@ -56,7 +56,7 @@ const Register = () => {
             })
             .then(userInfo => {
                 // Create user in database - using regular axios
-                return axios.post('http://localhost:3000/users', userInfo);
+                return axios.post('https://zap-server-production.up.railway.app/users', userInfo);
             })
             .then(res => {
                 if (res.data.insertedId) {

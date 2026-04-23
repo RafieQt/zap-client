@@ -23,7 +23,7 @@ const GoogleLogin = () => {
                 };
 
                 try {
-                await axios.post('http://localhost:3000/users', userInfo);
+                await axios.post('https://zap-server-production.up.railway.app/users', userInfo);
                 await user.reload();
                 console.log(res)
             } catch (err) {
